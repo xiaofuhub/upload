@@ -16,19 +16,22 @@ end type
 global ghhh ghhh
 
 on ghhh.create
-appname = "ghhh"
-message = create message
-sqlca = create transaction
-sqlda = create dynamicdescriptionarea
-sqlsa = create dynamicstagingarea
-error = create error
+appname="ghhh"
+message=create message
+sqlca=create transaction
+sqlda=create dynamicdescriptionarea
+sqlsa=create dynamicstagingarea
+error=create error
 end on
 
 on ghhh.destroy
-destroy( sqlca )
-destroy( sqlda )
-destroy( sqlsa )
-destroy( error )
-destroy( message )
+destroy(sqlca)
+destroy(sqlda)
+destroy(sqlsa)
+destroy(error)
+destroy(message)
 end on
+
+event open;//98888
+end event
 
