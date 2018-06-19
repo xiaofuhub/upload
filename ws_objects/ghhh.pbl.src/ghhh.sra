@@ -33,5 +33,6 @@ destroy(message)
 end on
 
 event open;//98888
+//aaaa
 end event
 
