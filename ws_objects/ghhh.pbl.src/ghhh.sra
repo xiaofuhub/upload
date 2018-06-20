@@ -38,7 +38,5 @@ event open;//98888
 //fafaaa
 //oppp
 //fdddd
-
-
 end event
 
