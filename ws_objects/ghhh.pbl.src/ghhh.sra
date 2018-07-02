@@ -38,18 +38,8 @@ event open;//98888
 //fafaaa
 //oppp
 //fddd
-//ssss
-//asss
-//ddfff
-//uuuuuuu
-//fdadd
-//adddddd
-//78733333
-//dfdsssssssssss
-//dsfdddddd
-///dfdfddddddddddd
-//dfssssssssssssssss
-///fdsad45555
-//fdsa77773333
+//122222
+
+
 end event
 
