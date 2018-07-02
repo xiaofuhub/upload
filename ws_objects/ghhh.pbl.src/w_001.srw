@@ -24,6 +24,7 @@ event open;//99000
 //369999
 //ssfff
 //5999
+//fdddd
 end event
 
 on w_001.create
