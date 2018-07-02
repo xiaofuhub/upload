@@ -21,6 +21,7 @@ global w_001 w_001
 
 event open;//99000
 //affff
+//yu123
 end event
 
 on w_001.create
