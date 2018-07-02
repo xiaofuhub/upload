@@ -51,8 +51,6 @@ event open;//98888
 //dfssssssssssssssss
 ///fdsad45555
 //fdsa77773333
-//0001
-//001tst
-//002test
+//78999
 end event
 
