@@ -12,6 +12,15 @@ end forward
 
 global type ghhh from application
 string appname = "ghhh"
+string themepath = "C:\Program Files (x86)\Appeon\Shared\theme"
+string themename = "Do Not Use Themes"
+boolean nativepdfvalid = false
+boolean nativepdfincludecustomfont = false
+string nativepdfappname = ""
+long richtextedittype = 0
+long richtexteditversion = 0
+string richtexteditkey = ""
+string appicon = ""
 end type
 global ghhh ghhh
 
@@ -60,5 +69,6 @@ event open;//98888
 //fdsssss00022
 //0003333222332323  001
 //66660  ghhhh
+//01111
 end event
 
