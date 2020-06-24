@@ -68,7 +68,10 @@ event open;//98888
 //bnnnnnnn
 //fdsssss00022
 //0003333222332323  001
+//<<<<<<< HEAD
 //66660  ghhhh
-//addd
+//01111
+//7878
+//66660  gh
 end event
 
