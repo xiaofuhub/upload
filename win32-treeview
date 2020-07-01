@@ -1,0 +1,179 @@
+#include <windows.h>
+#include <windowsx.h>
+#include <commctrl.h>
+
+#pragma comment( linker, "/manifestdependency:\"type='win32' \
+                         name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+                         processorArchitecture='*' publicKeyToken='6595b64144ccf1df' \
+                         language='*'\"")
+
+#pragma comment( lib, "comctl32.lib")
+
+// control IDs
+#define IDC_TREEVIEW    2000
+
+// init treeview
+BOOL InitTreeView(HWND hwndTV)
+{
+    // enable checkboxes, the way it was recommended in MSDN documentation
+    DWORD dwStyle = GetWindowLong(hwndTV, GWL_STYLE);
+    dwStyle |= TVS_CHECKBOXES;
+    SetWindowLongPtr(hwndTV, GWL_STYLE, dwStyle);
+
+    TVINSERTSTRUCT tvis = { 0 };
+
+    tvis.item.mask = TVIF_TEXT | TVIF_STATE;
+    tvis.hInsertAfter = TVI_FIRST;
+    tvis.hParent = NULL;
+    tvis.item.pszText = L"Root item";
+
+    HTREEITEM hti = (HTREEITEM)TreeView_InsertItem(hwndTV, &tvis);
+
+    if (NULL == hti)
+        return FALSE;
+
+    tvis.hParent = hti;
+    tvis.item.pszText = L"Second child node";
+    tvis.item.stateMask = TVIS_STATEIMAGEMASK;
+    tvis.item.state = 0 << 12;
+
+    HTREEITEM htiChild = TreeView_InsertItem(hwndTV, &tvis);
+
+    if (NULL == htiChild)
+        return FALSE;
+
+    tvis.item.pszText = L"First child node";
+    tvis.item.stateMask = TVIS_STATEIMAGEMASK;
+    tvis.item.state = 0 << 12;
+
+    htiChild = TreeView_InsertItem(hwndTV, &tvis);
+
+    if (NULL == htiChild)
+        return FALSE;
+
+    // remove checkbox
+    TreeView_SetItemState(hwndTV, htiChild, 0, TVIS_STATEIMAGEMASK);
+    // expand the root node
+    TreeView_Expand(hwndTV, hti, TVE_EXPAND);
+
+    // if we came all the way here then all is fine, report success
+    return TRUE;
+}
+
+// main window procedure
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+
+    switch (msg)
+    {
+    case WM_CREATE:
+    {
+        //================ create controls
+        RECT rec = { 0 };
+        GetClientRect(hwnd, &rec);
+
+        HWND hwndTV = CreateWindowEx(0, WC_TREEVIEW, L"TreeView",
+            WS_CHILD | WS_VISIBLE | WS_BORDER |
+            TVS_FULLROWSELECT | TVS_HASBUTTONS |
+            TVS_HASLINES | TVS_LINESATROOT |
+            TVS_DISABLEDRAGDROP,
+            10, 10, 200, 200,
+            hwnd, (HMENU)IDC_TREEVIEW,
+            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+        // initialize treeview
+        if (!InitTreeView(hwndTV))
+            return -1;
+    }
+        return 0L;
+    case WM_NOTIFY:
+    {
+        switch (((LPNMHDR)lParam)->code)
+        {
+        case NM_TVSTATEIMAGECHANGING:
+        {
+            // if item did not have checkbox, prevent state image change
+            // NOTE: this approach does not work if you programatically change item's state !!!
+            return (((LPNMTVSTATEIMAGECHANGING)lParam)->iOldStateImageIndex == 0);
+        }
+            break;
+        default:
+            break;
+        }
+    }
+        break;
+    case WM_CLOSE:
+        ::DestroyWindow(hwnd);
+        return 0L;
+    case WM_DESTROY:
+    {
+        ::PostQuitMessage(0);
+    }
+        return 0L;
+    default:
+        return ::DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
+// WinMain
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
+    int nCmdShow)
+{
+
+    WNDCLASSEX wc;
+    HWND hwnd;
+    MSG Msg;
+
+    // register main window class
+    wc.cbSize = sizeof(WNDCLASSEX);
+    wc.style = 0;
+    wc.lpfnWndProc = WndProc;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = hInstance;
+    wc.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = GetSysColorBrush(COLOR_WINDOW);
+    wc.lpszMenuName = NULL;
+    wc.lpszClassName = L"Main_Window";
+    wc.hIconSm = LoadIcon(hInstance, IDI_APPLICATION);
+
+    if (!RegisterClassEx(&wc))
+    {
+        // simple error indication
+        MessageBeep(0);
+        return 0;
+    }
+
+    // initialize common controls
+    INITCOMMONCONTROLSEX iccex;
+    iccex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+    iccex.dwICC = ICC_TREEVIEW_CLASSES | ICC_LISTVIEW_CLASSES | ICC_STANDARD_CLASSES;
+    InitCommonControlsEx(&iccex);
+
+    // create main window
+    hwnd = CreateWindowEx(0, L"Main_Window", L"Demonstration App",
+        WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        NULL, NULL, hInstance, 0);
+
+    if (NULL == hwnd)
+    {
+        // simple error indication
+        MessageBeep(0);
+        return 0;
+    }
+
+    ShowWindow(hwnd, nCmdShow);
+    UpdateWindow(hwnd);
+
+    while (GetMessage(&Msg, NULL, 0, 0) > 0)
+    {
+        TranslateMessage(&Msg);
+        DispatchMessage(&Msg);
+    }
+
+    return Msg.wParam;
+}
