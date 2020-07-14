@@ -28,6 +28,7 @@ type variables
 //test Master
 // xnj 10
 end variables
+
 on ghhh.create
 appname="ghhh"
 message=create message
@@ -78,5 +79,6 @@ event open;//98888
 //7878
 //66660  ghsss0
 //8888
+//mmm
 end event
 
