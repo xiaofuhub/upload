@@ -24,6 +24,9 @@ string appicon = ""
 end type
 global ghhh ghhh
 
+type variables
+//test Master
+end variables
 on ghhh.create
 appname="ghhh"
 message=create message
