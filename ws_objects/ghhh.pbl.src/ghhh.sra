@@ -26,6 +26,7 @@ global ghhh ghhh
 
 type variables
 //test Master
+// xnj
 end variables
 on ghhh.create
 appname="ghhh"
