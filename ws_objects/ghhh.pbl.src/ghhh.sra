@@ -24,6 +24,11 @@ string appicon = ""
 end type
 global ghhh ghhh
 
+type variables
+//test Master
+// xnj 10
+end variables
+
 on ghhh.create
 appname="ghhh"
 message=create message
@@ -70,9 +75,9 @@ event open;//98888
 //0003333222332323  001
 //<<<<<<< HEAD
 //66660  ghhhh
-//01111
+//011110
 //7878
 //66660  ghsss0
-//8888
+//88880000
 end event
 
