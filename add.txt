@@ -1,7 +1,0 @@
-fadd
-fsfsfffff
-<<<<<<< HEAD
-bb
-=======
-gd
->>>>>>> Branch01
