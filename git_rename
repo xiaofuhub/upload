@@ -1,0 +1,13 @@
+Git tracks file contents, not filenames. So renaming a file without changing its content is easy for git to detect. (Git does not track, but performs detection; using git mv or git rm and git add is effectively the same.)
+
+When a file is added to the repository, the filename is in the tree object. The actual file contents are added as a binary large object (blob) in the repository. Git will not add another blob for additional files that contain the same content. In fact, Git cannot as the content is stored in the filesystem with first two characters of the hash being the directory name and the rest being the name of file within it. So to detect renames is a matter of comparing hashes.
+
+To detect small changes to a renamed file, Git uses certain algorithms and a threshold limit to see if this is a rename. For example, have a look at the -M flag for git diff. There are also configuration values such as merge.renameLimit (the number of files to consider when performing rename detection during a merge).
+
+To understand how git treats similar files (i.e., what file transformations are considered as renames), explore the configuration options and flags available, as mentioned above. You need not be considered with the how. To understand how git actually accomplishes these tasks, look at the algorithms for finding differences in text, and read the git source code.
+
+Algorithms are applied only for diff, merge, and log purposes -- they do not affect how git stores them. Any small change in file content means a new object is added for it. There is no delta or diff happening at that level. Of course, later, the objects might be packed where deltas are stored in packfiles, but that is not related to the rename detection.
+
+
+
+https://stackoverflow.com/questions/7938582/how-does-git-detect-similar-files-for-its-rename-detection
