@@ -1,0 +1,51 @@
+
+/*
+ * main.cpp
+ *
+ *  Created on: 2014.4.15
+ *      Author: Spike
+ */
+ 
+/*vs2012*/
+ 
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <memory>
+ 
+using namespace std;
+ 
+class CDemo {
+public:
+	CDemo() : str(NULL) {};
+	~CDemo() {
+		static int i=0;
+		if (str) {
+			std::cout << "&Demo" << i++ << " = " << (int*)this << ", str = " << (int*)str << std::endl;
+			delete[] str;
+		}
+	}
+ 
+	//复制构造函数
+	CDemo(const CDemo& cd) {
+		this->str = new char[strlen(cd.str) + 1];
+		strcpy(this->str, cd.str);
+	}
+ 
+	char* str;
+};
+ 
+int main () {
+	CDemo d1;
+	d1.str = new char[32];
+	strcpy(d1.str, "Caroline");
+	std::vector<CDemo>* a1 = new std::vector<CDemo>();
+	a1->push_back(d1); //执行复制构造函数
+	std::cout << "d1.str = " << d1.str << std::endl;
+	std::cout << "(*a1)[0].str  = " << (*a1)[0].str << std::endl;
+	strcpy(d1.str, "Wendy");
+	std::cout << "d1.str = " << d1.str << std::endl;
+	std::cout << "(*a1)[0].str  = " << (*a1)[0].str << std::endl;
+	delete a1;
+	return 0;
+}
