@@ -8,6 +8,7 @@
 //12
 //ab
 //aa
+//hg
 
 #include <git2.h>
 
